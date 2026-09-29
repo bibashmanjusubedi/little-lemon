@@ -1,12 +1,15 @@
-import logo from '../assets/Logo .svg' // adjust filename/path as needed
+import React from 'react';
+import Nav from './Nav';
+import logo from '../assets/Logo .svg';
 
 function Header() {
   return (
-    <header>
-      {/* Header content / branding */}
-      <h1>Little Lemon</h1>
-      <img src={logo} alt="Little Lemon Logo" />
-    </header>
+    <div className="container">
+      <header>
+        <img src={logo} alt="Little Lemon Logo" className="logo" />
+        <Nav />
+      </header>
+    </div>
   );
 }
 

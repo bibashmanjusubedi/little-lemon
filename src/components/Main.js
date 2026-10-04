@@ -5,9 +5,9 @@ import BookingPage from './BookingPage';
 
 export function initializeTimes() {
   const today = new Date();
-  // Check window.fetchAPI safely at runtime, with a default fallback for tests
   if (typeof window !== 'undefined' && typeof window.fetchAPI === 'function') {
-    return window.fetchAPI(today);
+    const times = window.fetchAPI(today);
+    if (times) return times;
   }
   return ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
 }
@@ -17,9 +17,17 @@ export function updateTimes(state, action) {
     case 'UPDATE_TIMES':
       const selectedDate = new Date(action.payload);
       if (typeof window !== 'undefined' && typeof window.fetchAPI === 'function') {
-        return window.fetchAPI(selectedDate);
+        const times = window.fetchAPI(selectedDate);
+        if (times) return times;
       }
-      return ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+      return [
+        '17:00',
+        '18:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00'
+      ];
     default:
       return state;
   }

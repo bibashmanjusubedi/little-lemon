@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 function BookingForm({ availableTimes, dispatch }) {
   const [date, setDate] = useState('');
-  const [time, setTime] = useState(availableTimes[0] || '');
+  const [time, setTime] = useState('');
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
 
-  // Update default time if availableTimes changes/loads
+  // Set default time when availableTimes loads
   useEffect(() => {
     if (availableTimes && availableTimes.length > 0) {
       setTime(availableTimes[0]);
@@ -19,18 +19,40 @@ function BookingForm({ availableTimes, dispatch }) {
     dispatch({ type: 'UPDATE_TIMES', payload: selectedDate });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Reservation Submitted:', { date, time, guests, occasion });
+  // Step 2: Client-side validation logic
+  const isFormValid = () => {
+    return (
+      date !== '' &&
+      time !== '' &&
+      guests >= 1 &&
+      guests <= 10 &&
+      occasion !== ''
+    );
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isFormValid()) {
+      console.log('Reservation Submitted:', { date, time, guests, occasion });
+      alert('Reservation successful!');
+    }
+  };
+
+  // Get today's date in YYYY-MM-DD format for HTML5 min attribute
+  const today = new Date().toISOString().split('T')[0];
+
   return (
-    <form style={{ display: 'grid', maxWidth: '200px', gap: '20px', margin: '0 auto' }} onSubmit={handleSubmit}>
+    <form 
+      style={{ display: 'grid', maxWidth: '200px', gap: '20px', margin: '0 auto' }} 
+      onSubmit={handleSubmit}
+    >
+      {/* Step 1: HTML5 Validation (required, min date) */}
       <label htmlFor="res-date">Choose date</label>
       <input
         type="date"
         id="res-date"
         value={date}
+        min={today}
         onChange={handleDateChange}
         required
       />
@@ -40,6 +62,7 @@ function BookingForm({ availableTimes, dispatch }) {
         id="res-time"
         value={time}
         onChange={(e) => setTime(e.target.value)}
+        required
       >
         {availableTimes.map((availableTime) => (
           <option key={availableTime} value={availableTime}>
@@ -48,6 +71,7 @@ function BookingForm({ availableTimes, dispatch }) {
         ))}
       </select>
 
+      {/* Step 1: HTML5 Validation (min, max, required) */}
       <label htmlFor="guests">Number of guests</label>
       <input
         type="number"
@@ -56,7 +80,8 @@ function BookingForm({ availableTimes, dispatch }) {
         max="10"
         id="guests"
         value={guests}
-        onChange={(e) => setGuests(e.target.value)}
+        onChange={(e) => setGuests(Number(e.target.value))}
+        required
       />
 
       <label htmlFor="occasion">Occasion</label>
@@ -64,12 +89,22 @@ function BookingForm({ availableTimes, dispatch }) {
         id="occasion"
         value={occasion}
         onChange={(e) => setOccasion(e.target.value)}
+        required
       >
         <option value="Birthday">Birthday</option>
         <option value="Anniversary">Anniversary</option>
       </select>
 
-      <input type="submit" value="Make Your reservation" />
+      {/* Step 2: Disable button if form is invalid */}
+      <input 
+        type="submit" 
+        value="Make Your reservation" 
+        disabled={!isFormValid()}
+        style={{
+          backgroundColor: !isFormValid() ? '#cccccc' : '#f4ce14',
+          cursor: !isFormValid() ? 'not-allowed' : 'pointer'
+        }}
+      />
     </form>
   );
 }

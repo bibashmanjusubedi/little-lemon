@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function BookingForm({ availableTimes, dispatch }) {
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('17:00');
+  const [time, setTime] = useState(availableTimes[0] || '');
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
 
-  // Step 2: Handle date change and dispatch state update
+  // Update default time if availableTimes changes/loads
+  useEffect(() => {
+    if (availableTimes && availableTimes.length > 0) {
+      setTime(availableTimes[0]);
+    }
+  }, [availableTimes]);
+
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
     setDate(selectedDate);

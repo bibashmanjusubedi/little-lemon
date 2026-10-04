@@ -42,70 +42,73 @@ function BookingForm({ availableTimes, dispatch }) {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <form 
-      style={{ display: 'grid', maxWidth: '200px', gap: '20px', margin: '0 auto' }} 
-      onSubmit={handleSubmit}
-    >
-      {/* Step 1: HTML5 Validation (required, min date) */}
-      <label htmlFor="res-date">Choose date</label>
-      <input
-        type="date"
-        id="res-date"
-        value={date}
-        min={today}
-        onChange={handleDateChange}
-        required
-      />
-
-      <label htmlFor="res-time">Choose time</label>
-      <select
-        id="res-time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        required
+    // Step 1: Semantic markup wrapper
+    <section aria-label="Reservation Form Section">
+      <form 
+        style={{ display: 'grid', maxWidth: '200px', gap: '20px', margin: '0 auto' }} 
+        onSubmit={handleSubmit}
       >
-        {availableTimes.map((availableTime) => (
-          <option key={availableTime} value={availableTime}>
-            {availableTime}
-          </option>
-        ))}
-      </select>
+        {/* Step 3: Explicit labeling using htmlFor and id */}
+        <label htmlFor="res-date">Choose date</label>
+        <input
+          type="date"
+          id="res-date"
+          value={date}
+          min={today}
+          onChange={handleDateChange}
+          required
+        />
 
-      {/* Step 1: HTML5 Validation (min, max, required) */}
-      <label htmlFor="guests">Number of guests</label>
-      <input
-        type="number"
-        placeholder="1"
-        min="1"
-        max="10"
-        id="guests"
-        value={guests}
-        onChange={(e) => setGuests(Number(e.target.value))}
-        required
-      />
+        <label htmlFor="res-time">Choose time</label>
+        <select
+          id="res-time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          required
+        >
+          {availableTimes.map((availableTime) => (
+            <option key={availableTime} value={availableTime}>
+              {availableTime}
+            </option>
+          ))}
+        </select>
 
-      <label htmlFor="occasion">Occasion</label>
-      <select
-        id="occasion"
-        value={occasion}
-        onChange={(e) => setOccasion(e.target.value)}
-        required
-      >
-        <option value="Birthday">Birthday</option>
-        <option value="Anniversary">Anniversary</option>
-      </select>
+        <label htmlFor="guests">Number of guests</label>
+        <input
+          type="number"
+          placeholder="1"
+          min="1"
+          max="10"
+          id="guests"
+          value={guests}
+          onChange={(e) => setGuests(Number(e.target.value))}
+          required
+        />
 
-      {/* Step 2: Disable button if form is invalid */}
-      <input 
-        type="submit" 
-        value="Make Your reservation" 
-        disabled={!isFormValid()}
-        style={{
-          backgroundColor: !isFormValid() ? '#cccccc' : '#f4ce14',
-          cursor: !isFormValid() ? 'not-allowed' : 'pointer'
-        }}
-      />
-    </form>
+        <label htmlFor="occasion">Occasion</label>
+        <select
+          id="occasion"
+          value={occasion}
+          onChange={(e) => setOccasion(e.target.value)}
+          required
+        >
+          <option value="Birthday">Birthday</option>
+          <option value="Anniversary">Anniversary</option>
+        </select>
+
+        {/* Step 2: ARIA attribute aria-label="On Click" & disabled state */}
+        <input 
+          type="submit" 
+          value="Make Your reservation" 
+          aria-label="On Click"
+          disabled={!isFormValid()}
+          style={{
+            backgroundColor: !isFormValid() ? '#cccccc' : '#f4ce14',
+            cursor: !isFormValid() ? 'not-allowed' : 'pointer'
+          }}
+        />
+      </form>
+    </section>
   );
 }
 

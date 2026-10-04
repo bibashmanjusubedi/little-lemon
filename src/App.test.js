@@ -63,7 +63,8 @@ test('Submit button is disabled when form is invalid and enabled when valid', ()
     <BookingForm availableTimes={mockAvailableTimes} dispatch={mockDispatch} />
   );
 
-  const submitButton = screen.getByRole('button', { name: /make your reservation/i });
+  // Target the button using its aria-label name 'On Click'
+  const submitButton = screen.getByRole('button', { name: /on click/i });
 
   // 1. Invalid state (date field starts empty)
   expect(submitButton).toBeDisabled();

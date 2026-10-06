@@ -96,11 +96,11 @@ function BookingForm({ availableTimes, dispatch }) {
           <option value="Anniversary">Anniversary</option>
         </select>
 
-        {/* Step 2: ARIA attribute aria-label="On Click" & disabled state */}
+        {/* Step 2: ARIA attribute aria-label="Make your reservation on click" & disabled state */}
         <input 
           type="submit" 
           value="Make Your reservation" 
-          aria-label="On Click"
+          aria-label="Make your reservation on click"
           disabled={!isFormValid()}
           style={{
             backgroundColor: !isFormValid() ? '#cccccc' : '#f4ce14',
